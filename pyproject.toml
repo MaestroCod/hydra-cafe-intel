@@ -1,0 +1,20 @@
+[tool.ruff]
+# Configuracao de lint/format do projeto (Etapa 2+).
+line-length = 88
+target-version = "py312"
+extend-exclude = [".venv", "data_lake", "notebooks"]
+
+[tool.ruff.lint]
+# BLE001: capturar `Exception` e proposital nos orquestradores de batch -
+# um ticker/arquivo com problema nao pode derrubar a execucao inteira.
+ignore = ["BLE001"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.12"
+warn_unused_ignores = true
+ignore_missing_imports = true
+exclude = "(\\.venv|data_lake)"

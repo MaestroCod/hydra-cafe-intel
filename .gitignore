@@ -1,0 +1,35 @@
+# --- Credenciais -------------------------------------------------------------
+.env
+.env.*
+!.env.example
+.cdsapirc
+
+# --- Data Lake local (dados brutos/derivados nao versionam) ------------------
+data_lake/**
+!data_lake/**/.gitkeep
+logs/
+*.log
+*.tif
+*.tiff
+*.nc
+*.grib
+*.parquet
+*.db
+
+# --- Python ------------------------------------------------------------------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# --- IDE / OS ----------------------------------------------------------------
+.vscode/*
+!.vscode/settings.json
+.idea/
+Thumbs.db
+desktop.ini

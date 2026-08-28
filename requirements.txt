@@ -1,0 +1,63 @@
+# =============================================================================
+# Plataforma de Inteligencia Climatica e Financeira para o Agronegocio
+# ETAPA 1 - Dependencias de ingestao (ambiente local, deploy futuro AWS)
+# Python recomendado: 3.11 ou 3.12  (evite 3.13/3.14: wheels de GDAL/GEOS ainda instaveis)
+# Instalacao: pip install -r requirements.txt
+# =============================================================================
+
+# --- Nucleo de dados / manipulacao -------------------------------------------
+pandas>=2.2,<3.0
+numpy>=1.26,<3.0
+pyarrow>=15.0            # escrita/leitura Parquet (camada processed do Data Lake)
+python-dotenv>=1.0       # leitura de credenciais locais via .env
+requests>=2.32           # download HTTP (CHIRPS GeoTIFF)
+urllib3>=2.2
+tqdm>=4.66               # barra de progresso nos downloads
+
+# --- Eixo Financeiro (Yahoo Finance) -----------------------------------------
+yfinance>=0.2.51         # KC=F, ICF=F, ZC=F, CCM=F, ZS=F, SJC=F
+lxml>=5.2                # parsing usado internamente pelo yfinance
+beautifulsoup4>=4.12
+
+# --- Eixo Climatico: rasters (CHIRPS - GeoTIFF) ------------------------------
+rasterio>=1.3.10         # leitura/reprojecao/clip de GeoTIFF
+rioxarray>=0.15          # ponte rasterio <-> xarray (.rio accessor)
+affine>=2.4
+pyproj>=3.6
+
+# --- Eixo Climatico: NetCDF / reanalise (ERA5-Land) --------------------------
+xarray>=2024.3.0
+netCDF4>=1.6.5
+h5netcdf>=1.3            # engine alternativa de leitura NetCDF4/HDF5
+h5py>=3.11               # backend HDF5 exigido pelo h5netcdf
+cdsapi>=0.7.4            # Copernicus Climate Data Store (ERA5-Land)
+cfgrib>=0.9.11           # opcional: leitura GRIB caso o CDS retorne .grib
+dask[array]>=2024.4.0    # processamento lazy/chunked de series climaticas longas
+bottleneck>=1.3          # acelera reducoes rolling/nan em xarray
+
+# --- Geoespacial vetorial (mascaras de municipios/fazendas/talhoes) ----------
+geopandas>=0.14
+shapely>=2.0
+fiona>=1.9
+
+# --- Camada de armazenamento (abstracao local -> AWS S3) --------------------
+boto3>=1.34              # StorageBackend "s3" na Etapa 2
+botocore>=1.34
+s3fs>=2024.3.1           # leitura direta s3:// via pandas/xarray (opcional)
+
+# --- Banco de dados analitico (AWS RDS PostGIS) -----------------------------
+SQLAlchemy>=2.0
+psycopg2-binary>=2.9
+GeoAlchemy2>=0.15
+
+# --- Qualidade de codigo / testes / notebooks -------------------------------
+pytest>=8.2
+black>=24.4
+ruff>=0.4
+mypy>=1.10
+ipykernel>=6.29
+matplotlib>=3.8          # inspecao visual rapida de rasters e series
+
+# --- Painel interativo (Etapa 5 / Streamlit) ---------------------------------
+streamlit>=1.36
+plotly>=5.22

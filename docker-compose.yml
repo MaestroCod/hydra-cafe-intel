@@ -1,0 +1,29 @@
+# ETAPA 5 - Orquestracao da aplicacao Hydra (EC2 t3.micro = 1 GB RAM).
+# O limite de memoria abaixo garante folga para o SO e o agente de monitoramento.
+services:
+  hydra:
+    build: .
+    container_name: hydra
+    ports:
+      - "8501:8501"
+    environment:
+      - STORAGE_BACKEND=${STORAGE_BACKEND:-local}
+      - DATA_LAKE_ROOT=${DATA_LAKE_ROOT:-data_lake}
+      - POSTGRES_HOST=${POSTGRES_HOST:-localhost}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      - POSTGRES_DB=${POSTGRES_DB:-agro_intel}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-}
+    env_file:
+      - .env
+    volumes:
+      - ./data_lake:/app/data_lake
+    mem_limit: 800m
+    pids_limit: 512
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 40s
+      retries: 3
